@@ -211,7 +211,7 @@ def main(image_source,kunci):
     '''
     keterangan : 
     encrypted_img : hasil image yang sudah di enkripsi
-    restore_imgvv: hasil image yang sudah di deksripsi
+    restore_img: hasil image yang sudah di deksripsi
     source_img : image original
     '''
     eval(source_img,encrypted_img)

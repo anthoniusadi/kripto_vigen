@@ -23,12 +23,18 @@ def entropy(img1):
         sum_en = np.sum(val_entropy)
         return sum_en[0]
 
+# def calc_mse(img1,img2):
+#     error_pixel = (img1 -img2) ** 2
+#     summed_error = np.sum(error_pixel)
+#     total_pixel = img1.shape[0] * img1.shape[1] 
+#     mse_val = summed_error / total_pixel
+#     return mse_val
 def calc_mse(img1,img2):
-    error_pixel = (img1 -img2) ** 2
-    summed_error = np.sum(error_pixel)
-    total_pixel = img1.shape[0] * img1.shape[1] 
-    mse_val = summed_error / total_pixel
-    return mse_val
+    if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
+        mse = np.mean((img1.astype(np.float64) / 255 - img2.astype(np.float64) / 255) ** 2)
+        return mse
+    else:
+        return 'shape doesnt match'
 
 def calc_psnr(img1,img2):
 #     img1 = cv2.imread(img1)
@@ -36,49 +42,65 @@ def calc_psnr(img1,img2):
 #     calc PSNR
     # mse = calc_mse(img1,img2)
     # print(mse)
-    # mse = np.mean((img1.astype(np.float64) / 255 - img2.astype(np.float64) / 255) ** 2)
+    if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
+        mse = np.mean((img1.astype(np.float64) / 255 - img2.astype(np.float64) / 255) ** 2)
     # psnr = 10 * np.log10(255.0 / mse)
-    # psnr = 20 * np.log10(1.0 / sqrt(mse)) 
-    psnr =  cv2.PSNR(img1,img2)
-    return psnr
+        if mse>0:
+            psnr = 20 * np.log10(1.0 / sqrt(mse)) 
+        else:
+            psnr = 'INFINITY'
+        # psnr =  cv2.PSNR(img1,img2)
+        return psnr
+    else:
+        return "shape doesnt match"
 
 def D(source_img,restored_img):
-    b_channel_source,g_channel_source,r_channel_source = cv2.split(source_img)
-    b_channel_restore,g_channel_restore,r_channel_restore = cv2.split(restored_img)
-    count_0 =0
-    count_1 =0
-    for i in range (b_channel_restore.shape[0]):
-        for j in range(b_channel_restore.shape[1]):
-            if b_channel_source[i][j] == b_channel_restore[i][j]:
-                count_0+=1
-            else:
-                count_1+=1
-    for i in range (g_channel_restore.shape[0]):
-        for j in range(g_channel_restore.shape[1]):
-            if g_channel_source[i][j] == g_channel_restore[i][j]:
-                count_0+=1
-            else:
-                count_1+=1
-    for i in range (b_channel_restore.shape[0]):
-        for j in range(b_channel_restore.shape[1]):
-            if r_channel_source[i][j] == r_channel_restore[i][j]:
-                count_0+=1
-            else:
-                count_1+=1
-    return count_0,count_1
+    if (source_img.shape[0] == restored_img.shape[0] and source_img.shape[1] == restored_img.shape[1]):
+        b_channel_source,g_channel_source,r_channel_source = cv2.split(source_img)
+        b_channel_restore,g_channel_restore,r_channel_restore = cv2.split(restored_img)
+        count_0 =0
+        count_1 =0
+        for i in range (b_channel_restore.shape[0]):
+            for j in range(b_channel_restore.shape[1]):
+                if b_channel_source[i][j] == b_channel_restore[i][j]:
+                    count_0+=1
+                else:
+                    count_1+=1
+        for i in range (g_channel_restore.shape[0]):
+            for j in range(g_channel_restore.shape[1]):
+                if g_channel_source[i][j] == g_channel_restore[i][j]:
+                    count_0+=1
+                else:
+                    count_1+=1
+        for i in range (b_channel_restore.shape[0]):
+            for j in range(b_channel_restore.shape[1]):
+                if r_channel_source[i][j] == r_channel_restore[i][j]:
+                    count_0+=1
+                else:
+                    count_1+=1
+        return count_0,count_1
+    else:
+        return "shape doesnt match"
 
 def npcr(img1,img2):
-    _ , one = D(img1,img2)
-    return one /(img1.shape[0]*img1.shape[1])
+    if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
+        _ , one = D(img1,img2)
+        return one /(img1.shape[0]*img1.shape[1])
+    else:
+        return "shape doesnt match"
 
 def uaci(source_img,restored_img):
-    b_channel_source,g_channel_source,r_channel_source = cv2.split(source_img)
-    b_channel_restore,g_channel_restore,r_channel_restore = cv2.split(restored_img)
-    b = np.sum(abs(b_channel_source-b_channel_restore))
-    g = np.sum(abs(g_channel_source-g_channel_restore))
-    r = np.sum(abs(r_channel_source-r_channel_restore))  
-    s=(b+g+r)/255.0
-#     print(s)
-    value = round((s / (source_img.shape[0]*source_img.shape[1]) )*100,2)
-#     print(value)
-    return value
+    if (source_img.shape[0] == restored_img.shape[0] and source_img.shape[1] == restored_img.shape[1]):
+
+        b_channel_source,g_channel_source,r_channel_source = cv2.split(source_img)
+        b_channel_restore,g_channel_restore,r_channel_restore = cv2.split(restored_img)
+        b = np.sum(abs(b_channel_source-b_channel_restore))
+        g = np.sum(abs(g_channel_source-g_channel_restore))
+        r = np.sum(abs(r_channel_source-r_channel_restore))  
+        s=(b+g+r)/255.0
+    #     print(s)
+        value = round((s / (source_img.shape[0]*source_img.shape[1]) )*100,2)
+    #     print(value)
+        return value
+    else:
+        return "shape doesnt match"

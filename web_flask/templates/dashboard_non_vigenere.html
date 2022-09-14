@@ -6,51 +6,37 @@
 <div class="container-fluid">
     <div class="row">
         {%if state_process == True%}
+        <div class="col-sm-1">
+
+        </div>
         <div class="col-sm-3">
             <h5 class=""><strong>Citra Uji</strong></h5>
-
-            <!-- <img src="{{ filename1 }}" style="width: 100%;"> -->
             <div class="card h-100" style="width: 100%;">
-                <img class="card-img-top" src = {{filename1}} alt="Card image cap">
+                <img class="card-img-top" src = {{citrauji1}} alt="Card image cap">
 
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <h5 class=""><strong>Histogram</strong></h5>
             <!-- <img src="{{ filename2 }}" style="width: 100%;"> -->
             <div class="card h-100" style="width: 100%;">
-                <img class="card-img-top" src = {{filename5}} alt="Card image cap">
+                <img class="card-img-top" src = {{histo1}} alt="Card image cap">
                 <div class="card-body " >
-                  <h5 class="card-title">Histogram Image Enkripsi</h5>
+                  <h5 class="card-title">Histogram citra uji 1</h5>
                 </div>
                
-                <img class="card-img-top" src = {{filename2}} alt="Card image cap">
+                <img class="card-img-top" src = {{histo2}} alt="Card image cap">
                 <div class="card-body">
-                  <h5 class="card-title">Histogram Image Deksripsi</h5>
+                  <h5 class="card-title">Histogram citra uji 2</h5>
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
-            <h5 class=""><strong>Proses</strong></h5>
 
-            <!-- <img src="{{ filename3 }}" style="width: 100%;"> -->
-            <div class="card h-100" style="width: 100%;">
-                <img class="card-img-top" src = {{filename3}} alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Hasil Image Enkripsi (Channel) </h5>
-                </div>
-            
-                <img class="card-img-top" src = {{filename4}} alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Hasil Image Dekripsi(Channel)</h5>  
-                </div>
-            </div>
-        </div>
         <div class="col-sm-3">
-            <h5 class=""><strong>Citra Output</strong></h5>
+            <h5 class=""><strong>Citra Uji 2</strong></h5>
             <!-- <img src="{{ filename4 }}" style="width: 100%;"> -->
             <div class="card h-100">
-                <img class="card-img-top" src = {{filename6}} alt="Card image cap">
+                <img class="card-img-top" src = {{citrauji2}} alt="Card image cap">
 
             </div>
         </div>
@@ -59,29 +45,24 @@
 <br>
 <hr>
 <div class="container-fluid">
-
     <div class="row">
-        <form class="col-sm-5" action="/process" method="post" enctype="multipart/form-data">
-            <a href="/non_vigen"><button class="btn btn-primary btn-sm mt-3" type="button">Pindah Pengujian Tanpa Vigenere</button> </a>
+        <form class="col-sm-5" action="/process_non" method="post" enctype="multipart/form-data">
+            <a href="/"><button class="btn btn-primary btn-sm mt-3" type="button">Pindah Pengujian Vigenere</button> </a>
             <br>
             <br>
-            <input class="form-control" type="file" name="imgfile">
+            <label for="">citra uji 1</label>
+            <input class="form-control" type="file" name="imgfile1">
             <br>
-            <input type="text" id="form12" class="form-control" name="key">
-            <label class="form-label" for="form12">input key</label>
+            <label for="">citra uji 2</label>
+            <input class="form-control" type="file" name="imgfile2">
             <br>
             <!-- <input class="btn btn-primary mt-3" type="submit" value="Process"> -->
-
             <label for="vigenere">Mode : </label>
             <select name="vigenere" id="vigenere">
-                <option value="yes" selected>Proses dengan Vigenere</option>
+                <option value="no" selected>Proses Non-Vigenere</option>
             </select>
-            
-
             <br>
             <input class="btn btn-primary mt-3" type="submit" value="Process">
-            
-
         </form>
 
         <!-- <div class="col-sm-2">
@@ -106,7 +87,7 @@
             <!-- <a href=""><button class="btn btn-outline-success" type="button">Proses tanpa Vigenere</button></a>
             <a href=""><button class="btn btn-outline-success" type="button">Proses dengan Vigenere</button></a> -->
             <p>Evaluasi citra PSNR, MSE, NPCR, UACI, ENTROPY</p>
-            <a href="/evaluasi">
+            <a href="/evaluasi_non">
                 <button type="button" class="btn btn-primary" >Evaluasi</button>
                 </a>
         </div>
@@ -126,10 +107,7 @@
                         <th scope="row">PSNR</th>
                         <td>{{values[0]}}</td>
                     </tr>
-                    <tr>
-                        <th scope="row">Stationery</th>
-                        <td>18,000</td>
-                    </tr>
+
                     <tr>
                         <th scope="row">MSE</th>
                         <td>{{values[1]}}</td>

@@ -29,6 +29,7 @@ def decryptImage(pixels, key):
     return __encDecImage(key, pixels, -1)
 
 def histogram(source_img):
+
     img = cv2.imread(source_img)
     b_channel ,g_channel, r_channel = cv2.split(img)
     plt.figure(figsize=(12, 4))
@@ -44,10 +45,41 @@ def histogram(source_img):
     plt.subplot(133),plt.imshow(b_channel,'gray'),plt.title('B')
     plt.tight_layout()
     plt.savefig('static/output/image_source_split.png')
-
     return b_channel,g_channel,r_channel
 
-    
+def histogram_non(im1,im2):
+    img1 = cv2.imread(im1)
+    b_channel ,g_channel, r_channel = cv2.split(img1)
+    plt.figure(figsize=(12, 4))
+    plt.subplot(131),plt.hist(r_channel.flatten(), bins='auto'),plt.title('R')
+    plt.subplot(132),plt.hist(g_channel.flatten(), bins='auto'),plt.title('G')
+    plt.subplot(133),plt.hist(b_channel.flatten(), bins='auto'),plt.title('B')
+    plt.tight_layout()
+    plt.savefig('static/UPLOAD_FOLDER_WO_VIGENERE/citra_uji1_histogram.png')
+
+    plt.figure(figsize=(12, 8))
+    plt.subplot(131),plt.imshow(r_channel,'gray'),plt.title('R')
+    plt.subplot(132),plt.imshow(g_channel,'gray'),plt.title('G')
+    plt.subplot(133),plt.imshow(b_channel,'gray'),plt.title('B')
+    plt.tight_layout()
+    plt.savefig('static/UPLOAD_FOLDER_WO_VIGENERE/citra_uji1_split.png')
+
+    img2 = cv2.imread(im2)
+    b_channel ,g_channel, r_channel = cv2.split(img2)
+    plt.figure(figsize=(12, 4))
+    plt.subplot(131),plt.hist(r_channel.flatten(), bins='auto'),plt.title('R')
+    plt.subplot(132),plt.hist(g_channel.flatten(), bins='auto'),plt.title('G')
+    plt.subplot(133),plt.hist(b_channel.flatten(), bins='auto'),plt.title('B')
+    plt.tight_layout()
+    plt.savefig('static/UPLOAD_FOLDER_WO_VIGENERE/citra_uji2_histogram.png')
+
+
+    plt.figure(figsize=(12, 8))
+    plt.subplot(131),plt.imshow(r_channel,'gray'),plt.title('R')
+    plt.subplot(132),plt.imshow(g_channel,'gray'),plt.title('G')
+    plt.subplot(133),plt.imshow(b_channel,'gray'),plt.title('B')
+    plt.tight_layout()
+    plt.savefig('static/UPLOAD_FOLDER_WO_VIGENERE/citra_uji2_split.png')
 def enkripsi(kunci, r_channel ,g_channel,b_channel):
 
     time_start = time.perf_counter()
@@ -71,7 +103,7 @@ def enkripsi(kunci, r_channel ,g_channel,b_channel):
     plt.subplot(132),plt.hist(g_channel_encrypted.flatten(), bins='auto'),plt.title('G')
     plt.subplot(133),plt.hist(b_channel_encrypted.flatten(), bins='auto'),plt.title('B')
     plt.tight_layout()
-    plt.savefig('static/output/enkripsi_histogram_img.png')
+    plt.savefig('static/output/image_enkripsi_histogram.png')
     print('Waktu enkripsi image: {} detik'.format(time_stop - time_start))
     return r_channel_encrypted,g_channel_encrypted,b_channel_encrypted,encrypted_img
 
