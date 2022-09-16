@@ -169,8 +169,8 @@ def process_non():
         citrauji1 = os.path.join(app.config['TEMP_FOLDER'], 'original1.jpg')
         citrauji2 = os.path.join(app.config['TEMP_FOLDER'], 'original2.jpg')
         # split dalam RGB chanell
-        b,g,r = modules.histogram(citrauji1)
-        b,g,r = modules.histogram(citrauji2)
+        modules.histogram_non(citrauji1,citrauji2)
+        # b,g,r = modules.histogram_non(citrauji2,citrauji2)
 
 
 

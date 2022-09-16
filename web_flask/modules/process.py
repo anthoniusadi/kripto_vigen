@@ -49,6 +49,7 @@ def histogram(source_img):
 
 def histogram_non(im1,im2):
     img1 = cv2.imread(im1)
+    img2 = cv2.imread(im2)
     b_channel ,g_channel, r_channel = cv2.split(img1)
     plt.figure(figsize=(12, 4))
     plt.subplot(131),plt.hist(r_channel.flatten(), bins='auto'),plt.title('R')
@@ -64,7 +65,7 @@ def histogram_non(im1,im2):
     plt.tight_layout()
     plt.savefig('static/UPLOAD_FOLDER_WO_VIGENERE/citra_uji1_split.png')
 
-    img2 = cv2.imread(im2)
+    
     b_channel ,g_channel, r_channel = cv2.split(img2)
     plt.figure(figsize=(12, 4))
     plt.subplot(131),plt.hist(r_channel.flatten(), bins='auto'),plt.title('R')
@@ -80,6 +81,7 @@ def histogram_non(im1,im2):
     plt.subplot(133),plt.imshow(b_channel,'gray'),plt.title('B')
     plt.tight_layout()
     plt.savefig('static/UPLOAD_FOLDER_WO_VIGENERE/citra_uji2_split.png')
+    
 def enkripsi(kunci, r_channel ,g_channel,b_channel):
 
     time_start = time.perf_counter()

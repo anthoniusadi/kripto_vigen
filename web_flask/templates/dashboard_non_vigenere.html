@@ -1,4 +1,4 @@
-{% extends "home.html" %}
+{% extends "home_non.html" %}
 {% block content %}
 <!-- header -->
 
@@ -13,7 +13,6 @@
             <h5 class=""><strong>Citra Uji</strong></h5>
             <div class="card h-100" style="width: 100%;">
                 <img class="card-img-top" src = {{citrauji1}} alt="Card image cap">
-
             </div>
         </div>
         <div class="col-sm-4">
@@ -24,20 +23,17 @@
                 <div class="card-body " >
                   <h5 class="card-title">Histogram citra uji 1</h5>
                 </div>
-               
                 <img class="card-img-top" src = {{histo2}} alt="Card image cap">
                 <div class="card-body">
                   <h5 class="card-title">Histogram citra uji 2</h5>
                 </div>
             </div>
         </div>
-
         <div class="col-sm-3">
             <h5 class=""><strong>Citra Uji 2</strong></h5>
             <!-- <img src="{{ filename4 }}" style="width: 100%;"> -->
             <div class="card h-100">
                 <img class="card-img-top" src = {{citrauji2}} alt="Card image cap">
-
             </div>
         </div>
     {%endif%}
@@ -47,7 +43,7 @@
 <div class="container-fluid">
     <div class="row">
         <form class="col-sm-5" action="/process_non" method="post" enctype="multipart/form-data">
-            <a href="/"><button class="btn btn-primary btn-sm mt-3" type="button">Pindah Pengujian Vigenere</button> </a>
+            <a href="/"><button class="btn btn-success btn-sm mt-3" type="button">Pindah Pengujian Vigenere</button> </a>
             <br>
             <br>
             <label for="">citra uji 1</label>
@@ -62,7 +58,10 @@
                 <option value="no" selected>Proses Non-Vigenere</option>
             </select>
             <br>
-            <input class="btn btn-primary mt-3" type="submit" value="Process">
+            <input class="btn btn-success mt-3" type="submit" value="Process">
+            <a href="/evaluasi_non">
+                <button type="button" class="eval btn btn-success" >Evaluasi</button>
+                </a>
         </form>
 
         <!-- <div class="col-sm-2">
@@ -82,15 +81,12 @@
             </div>
         </div> -->
 
-        <div class="col-sm-3">  
-             
-            <!-- <a href=""><button class="btn btn-outline-success" type="button">Proses tanpa Vigenere</button></a>
-            <a href=""><button class="btn btn-outline-success" type="button">Proses dengan Vigenere</button></a> -->
+        <!-- <div class="col-sm-3">  
             <p>Evaluasi citra PSNR, MSE, NPCR, UACI, ENTROPY</p>
             <a href="/evaluasi_non">
-                <button type="button" class="btn btn-primary" >Evaluasi</button>
-                </a>
-        </div>
+                <button type="button" class="btn btn-success" >Evaluasi</button>
+            </a>
+        </div> -->
 
         <div class="col-sm-3">
             {%if (state_process == True) and (state == True)%}
@@ -98,7 +94,7 @@
                 <caption>{{keterangan}}</caption>
                 <thead>
                     <tr>
-                        <th scope="col">Metrics</th>
+                        <th scope="col">Parameter</th>
                         <th scope="col">Nilai</th>
                     </tr>
                 </thead>
@@ -135,7 +131,7 @@
                 <h6>ENTROPY : {{values[4]}}</h6> -->
                 <!-- <span>{{keterangan}}</span> -->
             {%else%}
-                <span>tombol evaluasi untuk melihat nilai evaluasi</span>
+                <!-- <span>tombol evaluasi untuk melihat nilai evaluasi</span> -->
             {%endif%}
             </div>
 

@@ -62,7 +62,7 @@
 
     <div class="row">
         <form class="col-sm-5" action="/process" method="post" enctype="multipart/form-data">
-            <a href="/non_vigen"><button class="btn btn-primary btn-sm mt-3" type="button">Pindah Pengujian Tanpa Vigenere</button> </a>
+            <a href="/non_vigen"><button class="btn btn-success btn-sm mt-3" type="button">Pindah Pengujian Tanpa Vigenere</button> </a>
             <br>
             <br>
             <input class="form-control" type="file" name="imgfile">
@@ -79,8 +79,10 @@
             
 
             <br>
-            <input class="btn btn-primary mt-3" type="submit" value="Process">
-            
+            <input class="btn btn-success mt-3" type="submit" value="Process">
+            <a href="/evaluasi">
+                <button type="button" class="eval btn btn-success" >Evaluasi</button>
+            </a> 
 
         </form>
 
@@ -101,15 +103,12 @@
             </div>
         </div> -->
 
-        <div class="col-sm-3">  
-             
-            <!-- <a href=""><button class="btn btn-outline-success" type="button">Proses tanpa Vigenere</button></a>
-            <a href=""><button class="btn btn-outline-success" type="button">Proses dengan Vigenere</button></a> -->
+        <!-- <div class="col-sm-3">  
             <p>Evaluasi citra PSNR, MSE, NPCR, UACI, ENTROPY</p>
             <a href="/evaluasi">
-                <button type="button" class="btn btn-primary" >Evaluasi</button>
-                </a>
-        </div>
+                <button type="button" class="btn btn-success" >Evaluasi</button>
+            </a>
+        </div> -->
 
         <div class="col-sm-3">
             {%if (state_process == True) and (state == True)%}
@@ -117,7 +116,7 @@
                 <caption>{{keterangan}}</caption>
                 <thead>
                     <tr>
-                        <th scope="col">Metrics</th>
+                        <th scope="col">Parameter</th>
                         <th scope="col">Nilai</th>
                     </tr>
                 </thead>
@@ -157,7 +156,7 @@
                 <h6>ENTROPY : {{values[4]}}</h6> -->
                 <!-- <span>{{keterangan}}</span> -->
             {%else%}
-                <span>tombol evaluasi untuk melihat nilai evaluasi</span>
+                <!-- <span>tombol evaluasi untuk melihat nilai evaluasi</span> -->
             {%endif%}
             </div>
 

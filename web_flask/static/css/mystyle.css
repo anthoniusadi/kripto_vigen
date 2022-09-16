@@ -33,3 +33,10 @@ td {
 body{
     background-color: lightblue;
 }
+.non{
+    background-color: rgb(226, 241, 157);
+}
+.eval{
+    margin-top: 16px;
+
+}
