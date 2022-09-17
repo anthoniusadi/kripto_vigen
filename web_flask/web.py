@@ -59,7 +59,8 @@ def process():
         global filename5
         global filename6
         global state_process
-
+        global time_enkrip
+        global time_dekrip
         values = []
         state_process=True
         if request.method == 'POST':
@@ -81,8 +82,8 @@ def process():
 
         # menampilkan citra encrypted
         # do encrypt
-        r_encrypted,g_encrypted,b_encrypted,img_encrypted = modules.enkripsi(kunci=key,r_channel=r,g_channel=g,b_channel=b)
-        img_decrypt = modules.dekripsi(key,r_encrypted,g_encrypted,b_encrypted)
+        r_encrypted,g_encrypted,b_encrypted,img_encrypted,time_enkrip = modules.enkripsi(kunci=key,r_channel=r,g_channel=g,b_channel=b)
+        img_decrypt,time_dekrip = modules.dekripsi(key,r_encrypted,g_encrypted,b_encrypted)
         filename1 = os.path.join(app.config['OUT_FOLDER'], 'original.jpg')
         filename2 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi_histogram.png')
         filename3 = os.path.join(app.config['OUT_FOLDER'], 'enkripsi_img.png')
@@ -112,8 +113,8 @@ def process():
 
         # menampilkan citra encrypted
         # do encrypt
-        r_encrypted,g_encrypted,b_encrypted,img_encrypted = modules.enkripsi(kunci=key,r_channel=r,g_channel=g,b_channel=b)
-        img_decrypt = modules.dekripsi(key,r_encrypted,g_encrypted,b_encrypted)
+        r_encrypted,g_encrypted,b_encrypted,img_encrypted,time_enkrip = modules.enkripsi(kunci=key,r_channel=r,g_channel=g,b_channel=b)
+        img_decrypt,time_dekrip = modules.dekripsi(key,r_encrypted,g_encrypted,b_encrypted)
         filename1 = os.path.join(app.config['OUT_FOLDER'], 'original.jpg')
         filename2 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi_histogram.png')
         filename3 = os.path.join(app.config['OUT_FOLDER'], 'enkripsi_img.png')
@@ -121,7 +122,7 @@ def process():
         filename5 = os.path.join(app.config['OUT_FOLDER'], 'image_enkripsi_histogram.png')
         filename6 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi.jpg')
 
-        return render_template('dashboard.html',filename1=filename1,filename2=filename2 ,filename3 = filename3,filename4=filename4,filename5=filename5,filename6=filename6,state_process=state_process,values=values,state=state)
+        return render_template('dashboard.html',filename1=filename1,filename2=filename2 ,filename3 = filename3,filename4=filename4,filename5=filename5,filename6=filename6,state_process=state_process,values=values,state=state,time_enkrip=time_enkrip,time_dekrip=time_dekrip)
 
 ############################################################## non vigenere route ###################################################################
 @app.route('/non_vigen', methods = ["GET","POST"])
@@ -143,6 +144,7 @@ def process_non():
         global citrauji2
         global histo1
         global histo2
+        global time_non
 
         values = []
         state_process=True
@@ -180,10 +182,10 @@ def process_non():
         citrauji2 = os.path.join(app.config['UPLOAD_FOLDER2'], 'original2.jpg')
         histo1 = os.path.join(app.config['UPLOAD_FOLDER2'], 'citra_uji1_histogram.png')
         histo2 = os.path.join(app.config['UPLOAD_FOLDER2'], 'citra_uji2_histogram.png')
+        time_non = "Tidak ada komputasi enkripsi dan dekripsi"
 
 
-
-        return render_template('dashboard_non_vigenere.html',citrauji1=citrauji1,citrauji2=citrauji2,histo1=histo1,histo2=histo2,state_process=state_process,values=values,state=state)
+        return render_template('dashboard_non_vigenere.html',citrauji1=citrauji1,citrauji2=citrauji2,histo1=histo1,histo2=histo2,state_process=state_process,values=values,state=state,time_non = time_non)
     # else:
 
     #     if request.method == 'POST':
@@ -220,17 +222,19 @@ def process_non():
 @app.route('/evaluasi')
 def evaluasi():
     state=True
+    global time_enkrip
+    global time_dekrip
     if state_process :
         source_img = cv2.imread(filename3)
         restored_img = cv2.imread(filename4)
-        values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img))]
+        values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img)),time_enkrip,time_dekrip]
 
-        tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI " {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)} '
+        tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI : {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)}\nWaktu Komputasi Enkripsi : {time_enkrip} detik\nWaktu Komputasi Dekripsi : {time_dekrip} detik '
         
         with open('static/output/evaluation.txt','w') as out:
             out.write(tmp_val)
         ket = 'Output stored in static/output folder'
-        return render_template('dashboard.html',filename1=filename1,filename2=filename2 ,filename3 = filename3,filename4=filename4,filename5=filename5,filename6=filename6,values=values,keterangan=ket,state_process=state_process,state=state)
+        return render_template('dashboard.html',filename1=filename1,filename2=filename2 ,filename3 = filename3,filename4=filename4,filename5=filename5,filename6=filename6,values=values,keterangan=ket,state_process=state_process,state=state,time_enkrip=time_enkrip,time_dekrip=time_dekrip)
     else:
         # return redirect('/')
         return render_template('dashboard.html')
@@ -241,14 +245,14 @@ def evaluasi_non():
     if state_process :
         source_img = cv2.imread(citrauji1)
         restored_img = cv2.imread(citrauji2)
-        values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img))]
+        values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img)),time_non]
 
-        tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI " {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)} '
+        tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI " {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)}\n {time_non} '
         
         with open('static/UPLOAD_FOLDER_WO_VIGENERE/evaluation.txt','w') as out:
             out.write(tmp_val)
         ket = 'Output stored in static/UPLOAD_FOLDER_WO_VIGENERE folder'
-        return render_template('dashboard_non_vigenere.html',citrauji1=citrauji1,citrauji2=citrauji2,histo1=histo1,histo2=histo2,state_process=state_process,values=values,state=state)
+        return render_template('dashboard_non_vigenere.html',citrauji1=citrauji1,citrauji2=citrauji2,histo1=histo1,histo2=histo2,state_process=state_process,values=values,state=state,time_non=time_non)
     else:
         # return redirect('/')
         return render_template('dashboard_non_vigenere.html')

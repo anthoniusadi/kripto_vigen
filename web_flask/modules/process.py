@@ -91,7 +91,7 @@ def enkripsi(kunci, r_channel ,g_channel,b_channel):
 
     encrypted_img = cv2.merge((b_channel_encrypted,g_channel_encrypted,r_channel_encrypted))
     time_stop = time.perf_counter()
-
+    time_enkripsi = round(time_stop - time_start,3)
     plt.figure(figsize=(8, 4))
     plt.subplot(231),plt.imshow(r_channel_encrypted,'gray'),plt.title('R (encrypted)')
     plt.subplot(232),plt.imshow(g_channel_encrypted,'gray'),plt.title('G (encrypted)')
@@ -106,8 +106,9 @@ def enkripsi(kunci, r_channel ,g_channel,b_channel):
     plt.subplot(133),plt.hist(b_channel_encrypted.flatten(), bins='auto'),plt.title('B')
     plt.tight_layout()
     plt.savefig('static/output/image_enkripsi_histogram.png')
+
     print('Waktu enkripsi image: {} detik'.format(time_stop - time_start))
-    return r_channel_encrypted,g_channel_encrypted,b_channel_encrypted,encrypted_img
+    return r_channel_encrypted,g_channel_encrypted,b_channel_encrypted,encrypted_img,time_enkripsi
 
 def dekripsi(kunci,r_channel_encrypted,g_channel_encrypted,b_channel_encrypted):
     time_start = time.perf_counter()
@@ -116,7 +117,7 @@ def dekripsi(kunci,r_channel_encrypted,g_channel_encrypted,b_channel_encrypted):
     b_channel_decrypted = decryptImage(b_channel_encrypted, kunci)
     restored_img = cv2.merge((b_channel_decrypted,g_channel_decrypted,r_channel_decrypted))
     time_stop = time.perf_counter()
-
+    time_dekripsi = round(time_stop-time_start,3)
     plt.figure(figsize=(8, 4))
     plt.subplot(231),plt.imshow(r_channel_decrypted,'gray'),plt.title('R (decrypted)')
     plt.subplot(232),plt.imshow(g_channel_decrypted,'gray'),plt.title('G (decrypted)')
@@ -137,4 +138,4 @@ def dekripsi(kunci,r_channel_encrypted,g_channel_encrypted,b_channel_encrypted):
 
 
     print('Waktu dekripsi image: {} detik'.format(time_stop - time_start))
-    return restored_img
+    return restored_img,time_dekripsi

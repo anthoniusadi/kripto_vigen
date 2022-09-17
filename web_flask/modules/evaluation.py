@@ -21,7 +21,7 @@ def entropy(img1):
             val_entropy.append(en)
 
         sum_en = np.sum(val_entropy)
-        return sum_en[0]
+        return round(sum_en[0],3)
 
 # def calc_mse(img1,img2):
 #     error_pixel = (img1 -img2) ** 2
@@ -32,7 +32,7 @@ def entropy(img1):
 def calc_mse(img1,img2):
     if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
         mse = np.mean((img1.astype(np.float64) / 255 - img2.astype(np.float64) / 255) ** 2)
-        return mse
+        return round(mse,3)
     else:
         return 'shape doesnt match'
 
@@ -50,7 +50,7 @@ def calc_psnr(img1,img2):
         else:
             psnr = 'INFINITY'
         # psnr =  cv2.PSNR(img1,img2)
-        return psnr
+        return round(psnr,3)
     else:
         return "shape doesnt match"
 
@@ -85,7 +85,7 @@ def D(source_img,restored_img):
 def npcr(img1,img2):
     if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
         _ , one = D(img1,img2)
-        return one /(img1.shape[0]*img1.shape[1])
+        return round(one /(img1.shape[0]*img1.shape[1]),3)
     else:
         return "shape doesnt match"
 
@@ -101,6 +101,6 @@ def uaci(source_img,restored_img):
     #     print(s)
         value = round((s / (source_img.shape[0]*source_img.shape[1]) )*100,2)
     #     print(value)
-        return value
+        return round(value,3)
     else:
         return "shape doesnt match"
