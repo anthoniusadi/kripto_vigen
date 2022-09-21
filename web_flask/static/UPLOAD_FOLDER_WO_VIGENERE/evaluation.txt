@@ -1,0 +1,6 @@
+PSNR : 27.196
+MSE : 0.002
+NPCR : 0.018 %
+UACI " 0.81
+ENTROPY : 3.587
+ Tidak ada komputasi enkripsi dan dekripsi 
