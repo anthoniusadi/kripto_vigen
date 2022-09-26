@@ -4,6 +4,8 @@ import numpy as np
 import cv2
 import time
 
+# pip install pycryptodome
+
 def __encDecImage(key, pixels, isEncrypt):
     ans = []
     if not isinstance(key, str):
