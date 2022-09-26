@@ -23,18 +23,22 @@ def entropy(img1):
         sum_en = np.sum(val_entropy)
         return round(sum_en[0],3)
 
-# def calc_mse(img1,img2):
-#     error_pixel = (img1 -img2) ** 2
-#     summed_error = np.sum(error_pixel)
-#     total_pixel = img1.shape[0] * img1.shape[1] 
-#     mse_val = summed_error / total_pixel
-#     return mse_val
 def calc_mse(img1,img2):
     if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
-        mse = np.mean((img1.astype(np.float64) / 255 - img2.astype(np.float64) / 255) ** 2)
-        return round(mse,3)
+        error_pixel = (img1 -img2) ** 2
+        summed_error = np.sum(error_pixel)
+        total_pixel = img1.shape[0] * img1.shape[1] 
+        mse_val = summed_error / total_pixel
+        return round(mse_val,3)
     else:
         return 'shape doesnt match'
+
+# def calc_mse(img1,img2):
+#     if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
+#         mse = np.mean(((img1.astype(np.float64) / 255 )- (img2.astype(np.float64) / 255)) ** 2)
+#         return round(mse,3)
+#     else:
+#         return 'shape doesnt match'
 
 def calc_psnr(img1,img2):
 #     img1 = cv2.imread(img1)
@@ -47,10 +51,11 @@ def calc_psnr(img1,img2):
     # psnr = 10 * np.log10(255.0 / mse)
         if mse>0:
             psnr = 20 * np.log10(1.0 / sqrt(mse)) 
+            return round(psnr,3)
         else:
             psnr = 'INFINITY'
         # psnr =  cv2.PSNR(img1,img2)
-        return round(psnr,3)
+            return psnr
     else:
         return "shape doesnt match"
 

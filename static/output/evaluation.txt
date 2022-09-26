@@ -1,7 +1,0 @@
-PSNR : 10.973
-MSE : 0.08
-NPCR : 1.062 %
-UACI : 37.52
-ENTROPY : 2.156
-Waktu Komputasi Enkripsi : 3.491 detik
-Waktu Komputasi Dekripsi : 3.55 detik 

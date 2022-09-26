@@ -9,6 +9,12 @@ import modules
 from modules.cleaning import rename
 import cv2
 
+from Crypto.Cipher import AES
+import io
+import PIL.Image
+import binascii
+import math
+
 
 modules.create_folder()
 # cleaning.create_folder()
@@ -73,7 +79,7 @@ def process():
             key = request.form['key']
             read = cv2.imread(path)
             outfile = 'original' + '.jpg'
-            cv2.imwrite('static/output/'+outfile,read,[int(cv2.IMWRITE_JPEG_QUALITY),200])
+            cv2.imwrite('static/output/'+outfile,read,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
         # menampilkan original image
         filename1 = os.path.join(app.config['TEMP_FOLDER'], 'original.jpg')
@@ -82,8 +88,9 @@ def process():
 
         # menampilkan citra encrypted
         # do encrypt
-        r_encrypted,g_encrypted,b_encrypted,img_encrypted,time_enkrip = modules.enkripsi(kunci=key,r_channel=r,g_channel=g,b_channel=b)
-        img_decrypt,time_dekrip = modules.dekripsi(key,r_encrypted,g_encrypted,b_encrypted)
+        r_encrypted,g_encrypted,b_encrypted,img_encrypted,time_enkrip,key = modules.enkripsi(key=key,path_image_original=filename1)
+
+        time_dekrip = modules.dekripsi(key=key,r_channel= r_encrypted,g_channel= g_encrypted,b_channel= b_encrypted)
         filename1 = os.path.join(app.config['OUT_FOLDER'], 'original.jpg')
         filename2 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi_histogram.png')
         filename3 = os.path.join(app.config['OUT_FOLDER'], 'enkripsi_img.png')
@@ -104,7 +111,7 @@ def process():
             key = request.form['key']
             read = cv2.imread(path)
             outfile = 'original' + '.jpg'
-            cv2.imwrite('static/output/'+outfile,read,[int(cv2.IMWRITE_JPEG_QUALITY),200])
+            cv2.imwrite('static/output/'+outfile,read,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
         # menampilkan original image
         filename1 = os.path.join(app.config['TEMP_FOLDER'], 'original.jpg')
@@ -157,7 +164,7 @@ def process_non():
             file1.save(path1)
             read1 = cv2.imread(path1)
             outfile1 = 'original1' + '.jpg'
-            cv2.imwrite('static/UPLOAD_FOLDER_WO_VIGENERE/'+outfile1,read1,[int(cv2.IMWRITE_JPEG_QUALITY),200])
+            cv2.imwrite('static/UPLOAD_FOLDER_WO_VIGENERE/'+outfile1,read1)
             # citra 2
             file2 = request.files['imgfile2']
             name_img = request.files.getlist('imgfile2')
@@ -166,7 +173,7 @@ def process_non():
             file2.save(path2)
             read2 = cv2.imread(path2)
             outfile2 = 'original2' + '.jpg'
-            cv2.imwrite('static/UPLOAD_FOLDER_WO_VIGENERE/'+outfile2,read2,[int(cv2.IMWRITE_JPEG_QUALITY),200])
+            cv2.imwrite('static/UPLOAD_FOLDER_WO_VIGENERE/'+outfile2,read2)
 
         citrauji1 = os.path.join(app.config['TEMP_FOLDER'], 'original1.jpg')
         citrauji2 = os.path.join(app.config['TEMP_FOLDER'], 'original2.jpg')
@@ -225,11 +232,12 @@ def evaluasi():
     global time_enkrip
     global time_dekrip
     if state_process :
-        source_img = cv2.imread(filename3)
-        restored_img = cv2.imread(filename4)
-        values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img)),time_enkrip,time_dekrip]
+        source_img = cv2.imread(filename1)
+        restored_img = cv2.imread(filename6)
+        print(filename1,filename6)
+        values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img)),time_enkrip,time_dekrip,modules.check_size(filename1),modules.check_size(filename6)]
 
-        tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI : {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)}\nWaktu Komputasi Enkripsi : {time_enkrip} detik\nWaktu Komputasi Dekripsi : {time_dekrip} detik '
+        tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}db\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI : {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)}\nWaktu Komputasi Enkripsi : {time_enkrip} detik\nWaktu Komputasi Dekripsi : {time_dekrip} detik \n Image_size citra uji : {modules.check_size(filename1)}Mb \n Image_size citra dekripsi : {modules.check_size(filename6)}Mb '
         
         with open('static/output/evaluation.txt','w') as out:
             out.write(tmp_val)
@@ -247,7 +255,7 @@ def evaluasi_non():
         restored_img = cv2.imread(citrauji2)
         values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img)),time_non]
 
-        tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI " {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)}\n {time_non} '
+        tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}db\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI " {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)}\n {time_non} '
         
         with open('static/UPLOAD_FOLDER_WO_VIGENERE/evaluation.txt','w') as out:
             out.write(tmp_val)

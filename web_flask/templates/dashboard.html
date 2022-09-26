@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <h5 class=""><strong>Citra Output</strong></h5>
+            <h5 class=""><strong>Citra Dekripsi</strong></h5>
             <!-- <img src="{{ filename4 }}" style="width: 100%;"> -->
             <div class="card h-100">
                 <img class="card-img-top" src = {{filename6}} alt="Card image cap">
@@ -123,7 +123,7 @@
                 <tbody>
                     <tr>
                         <th scope="row">PSNR</th>
-                        <td>{{values[0]}}</td>
+                        <td>{{values[0]}}db</td>
                     </tr>
                     <tr>
                         <th scope="row">MSE</th>
@@ -149,6 +149,14 @@
                     <tr>
                         <th scope="row">Waktu Komputasi Dekripsi</th>
                         <td>{{values[6]}} detik</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ukuran citra test</th>
+                        <td>{{values[7]}} Mb</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ukuran citra dekripsi</th>
+                        <td>{{values[8]}} Mb</td>
                     </tr>
                 </tbody>
             </table>            

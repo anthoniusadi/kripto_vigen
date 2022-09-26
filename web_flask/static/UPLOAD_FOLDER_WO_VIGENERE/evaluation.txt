@@ -1,0 +1,6 @@
+PSNR : shape doesnt matchdb
+MSE : shape doesnt match
+NPCR : shape doesnt match %
+UACI " shape doesnt match
+ENTROPY : 7.448
+ Tidak ada komputasi enkripsi dan dekripsi 
