@@ -30,8 +30,7 @@ def calc_mse(img1,img2):
         total_pixel = img1.shape[0] * img1.shape[1] 
         mse_val = summed_error / total_pixel
         return round(mse_val,3)
-    else:
-        return 'shape doesnt match'
+    return 'shape doesnt match'
 
 # def calc_mse(img1,img2):
 #     if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
@@ -52,10 +51,9 @@ def calc_psnr(img1,img2):
         if mse>0:
             psnr = 20 * np.log10(1.0 / sqrt(mse)) 
             return round(psnr,3)
-        else:
-            psnr = 'INFINITY'
+        psnr = 'INFINITY'
         # psnr =  cv2.PSNR(img1,img2)
-            return psnr
+        return psnr
     else:
         return "shape doesnt match"
 
@@ -84,15 +82,13 @@ def D(source_img,restored_img):
                 else:
                     count_1+=1
         return count_0,count_1
-    else:
-        return "shape doesnt match"
+    return "shape doesnt match"
 
 def npcr(img1,img2):
     if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
         _ , one = D(img1,img2)
         return round(one /(img1.shape[0]*img1.shape[1]),3)
-    else:
-        return "shape doesnt match"
+    return "shape doesnt match"
 
 def uaci(source_img,restored_img):
     if (source_img.shape[0] == restored_img.shape[0] and source_img.shape[1] == restored_img.shape[1]):
@@ -107,5 +103,4 @@ def uaci(source_img,restored_img):
         value = round((s / (source_img.shape[0]*source_img.shape[1]) )*100,2)
     #     print(value)
         return round(value,3)
-    else:
-        return "shape doesnt match"
+    return "shape doesnt match"
