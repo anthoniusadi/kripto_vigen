@@ -1,4 +1,3 @@
-from math import sqrt
 import os
 import optparse
 import cv2

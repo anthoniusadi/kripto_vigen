@@ -2,18 +2,10 @@
 
 # from optparse import Values
 # from pickle import TRUE
-from glob import glob
 from flask import Flask,redirect,render_template,request,url_for
 import os
 import modules
-from modules.cleaning import rename
 import cv2
-
-from Crypto.Cipher import AES
-import io
-import PIL.Image
-import binascii
-import math
 
 
 modules.create_folder()

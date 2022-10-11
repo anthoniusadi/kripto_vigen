@@ -2,18 +2,14 @@
 # Image Encryption Decryption
 
 # imported necessary library
-import tkinter
 from tkinter import *
 import tkinter as tk
 import tkinter.messagebox as mbox
-from tkinter import ttk
 from tkinter import filedialog
 from PIL import ImageTk, Image
 import cv2
-import os
 import numpy as np
 from cv2 import *
-import random
 
 #created main window
 window = Tk()

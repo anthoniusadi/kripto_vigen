@@ -1,9 +1,6 @@
 from math import sqrt
-import os
 import cv2
 import numpy as np
-import time
-import matplotlib.pyplot as plt
 
 def entropy(img1):
         val_entropy = []
