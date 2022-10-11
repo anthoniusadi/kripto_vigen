@@ -227,8 +227,6 @@ def process_non():
 @app.route('/evaluasi')
 def evaluasi():
     state=True
-    global time_enkrip
-    global time_dekrip
     if state_process :
         source_img = cv2.imread(filename1)
         restored_img = cv2.imread(filename6)

@@ -88,7 +88,6 @@ def open_img():
 
 # function defined for make the sketch of image selected
 def en_fun():
-    global x, image_encrypted, key
     # print(x)
     image_input = cv2.imread(x)# 'C:/Users/aakas/Documents/flower.jpg'
     (x1, y) = image_input.shape
@@ -109,7 +108,6 @@ def en_fun():
 
 # function defined to make the image sharp
 def de_fun():
-    global image_encrypted, key
     image_output = image_encrypted * key
     image_output *= 255.0
     cv2.imwrite('image_output.jpg', image_output)
@@ -138,7 +136,6 @@ def reset():
 
 # function defined to same the edited image
 def save_img():
-    global location, filename, eimg
     print(filename)
     # eimg.save(location + filename + r"_edit.png")
     filename = filedialog.asksaveasfile(mode='w', defaultextension=".jpg")
