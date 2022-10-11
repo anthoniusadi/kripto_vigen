@@ -47,7 +47,7 @@ def check():
         vigen_state = False
         return redirect(url_for('non_vigen'))
 
-    
+
 
 @app.route('/process', methods = ["POST"])
 def process():
@@ -238,7 +238,7 @@ def evaluasi():
         values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img)),time_enkrip,time_dekrip,modules.check_size(filename1),modules.check_size(filename6)]
 
         tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}db\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI : {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)}\nWaktu Komputasi Enkripsi : {time_enkrip} detik\nWaktu Komputasi Dekripsi : {time_dekrip} detik \n Image_size citra uji : {modules.check_size(filename1)}Mb \n Image_size citra dekripsi : {modules.check_size(filename6)}Mb '
-        
+
         with open('static/output/evaluation.txt','w') as out:
             out.write(tmp_val)
         ket = 'Output stored in static/output folder'
@@ -256,7 +256,7 @@ def evaluasi_non():
         values = [modules.calc_psnr(source_img,restored_img),modules.calc_mse(source_img,restored_img),modules.npcr(source_img,restored_img),modules.uaci(source_img,restored_img),(modules.entropy(restored_img)),time_non]
 
         tmp_val = f'PSNR : {modules.calc_psnr(source_img,restored_img)}db\nMSE : {modules.calc_mse(source_img,restored_img)}\nNPCR : {modules.npcr(source_img,restored_img)} %\nUACI " {modules.uaci(source_img,restored_img)}\nENTROPY : {modules.entropy(restored_img)}\n {time_non} '
-        
+
         with open('static/UPLOAD_FOLDER_WO_VIGENERE/evaluation.txt','w') as out:
             out.write(tmp_val)
         ket = 'Output stored in static/UPLOAD_FOLDER_WO_VIGENERE folder'
