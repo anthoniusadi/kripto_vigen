@@ -43,9 +43,8 @@ def check():
     if selected_menu == 'yes':
         vigen_state = True
         return redirect(url_for('process'))
-    else:
-        vigen_state = False
-        return redirect(url_for('non_vigen'))
+    vigen_state = False
+    return redirect(url_for('non_vigen'))
 
 
 
@@ -99,37 +98,36 @@ def process():
         filename6 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi.jpg')
 
         return render_template('dashboard.html',filename1=filename1,filename2=filename2 ,filename3 = filename3,filename4=filename4,filename5=filename5,filename6=filename6,state_process=state_process,values=values,state=state)
-    else:
 
-        if request.method == 'POST':
-            file1 = request.files['imgfile']
-            name_img = request.files.getlist('imgfile')
-            # file1 = request.files('imgfile')
-            path = os.path.join(app.config['TEMP_FOLDER'], 'original.jpg')
-            # tmp = modules.rename(file1)
-            file1.save(path)
-            key = request.form['key']
-            read = cv2.imread(path)
-            outfile = 'original' + '.jpg'
-            cv2.imwrite('static/output/'+outfile,read,[cv2.IMWRITE_JPEG_QUALITY, 100])
+    if request.method == 'POST':
+        file1 = request.files['imgfile']
+        name_img = request.files.getlist('imgfile')
+        # file1 = request.files('imgfile')
+        path = os.path.join(app.config['TEMP_FOLDER'], 'original.jpg')
+        # tmp = modules.rename(file1)
+        file1.save(path)
+        key = request.form['key']
+        read = cv2.imread(path)
+        outfile = 'original' + '.jpg'
+        cv2.imwrite('static/output/'+outfile,read,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
-        # menampilkan original image
-        filename1 = os.path.join(app.config['TEMP_FOLDER'], 'original.jpg')
-        # split dalam RGB chanell
-        b,g,r = modules.histogram(filename1)
+    # menampilkan original image
+    filename1 = os.path.join(app.config['TEMP_FOLDER'], 'original.jpg')
+    # split dalam RGB chanell
+    b,g,r = modules.histogram(filename1)
 
-        # menampilkan citra encrypted
-        # do encrypt
-        r_encrypted,g_encrypted,b_encrypted,img_encrypted,time_enkrip = modules.enkripsi(kunci=key,r_channel=r,g_channel=g,b_channel=b)
-        img_decrypt,time_dekrip = modules.dekripsi(key,r_encrypted,g_encrypted,b_encrypted)
-        filename1 = os.path.join(app.config['OUT_FOLDER'], 'original.jpg')
-        filename2 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi_histogram.png')
-        filename3 = os.path.join(app.config['OUT_FOLDER'], 'enkripsi_img.png')
-        filename4 = os.path.join(app.config['OUT_FOLDER'], 'dekripsi_img.png')
-        filename5 = os.path.join(app.config['OUT_FOLDER'], 'image_enkripsi_histogram.png')
-        filename6 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi.jpg')
+    # menampilkan citra encrypted
+    # do encrypt
+    r_encrypted,g_encrypted,b_encrypted,img_encrypted,time_enkrip = modules.enkripsi(kunci=key,r_channel=r,g_channel=g,b_channel=b)
+    img_decrypt,time_dekrip = modules.dekripsi(key,r_encrypted,g_encrypted,b_encrypted)
+    filename1 = os.path.join(app.config['OUT_FOLDER'], 'original.jpg')
+    filename2 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi_histogram.png')
+    filename3 = os.path.join(app.config['OUT_FOLDER'], 'enkripsi_img.png')
+    filename4 = os.path.join(app.config['OUT_FOLDER'], 'dekripsi_img.png')
+    filename5 = os.path.join(app.config['OUT_FOLDER'], 'image_enkripsi_histogram.png')
+    filename6 = os.path.join(app.config['OUT_FOLDER'], 'image_dekripsi.jpg')
 
-        return render_template('dashboard.html',filename1=filename1,filename2=filename2 ,filename3 = filename3,filename4=filename4,filename5=filename5,filename6=filename6,state_process=state_process,values=values,state=state,time_enkrip=time_enkrip,time_dekrip=time_dekrip)
+    return render_template('dashboard.html',filename1=filename1,filename2=filename2 ,filename3 = filename3,filename4=filename4,filename5=filename5,filename6=filename6,state_process=state_process,values=values,state=state,time_enkrip=time_enkrip,time_dekrip=time_dekrip)
 
 ############################################################## non vigenere route ###################################################################
 @app.route('/non_vigen', methods = ["GET","POST"])
@@ -243,9 +241,8 @@ def evaluasi():
             out.write(tmp_val)
         ket = 'Output stored in static/output folder'
         return render_template('dashboard.html',filename1=filename1,filename2=filename2 ,filename3 = filename3,filename4=filename4,filename5=filename5,filename6=filename6,values=values,keterangan=ket,state_process=state_process,state=state,time_enkrip=time_enkrip,time_dekrip=time_dekrip)
-    else:
-        # return redirect('/')
-        return render_template('dashboard.html')
+    # return redirect('/')
+    return render_template('dashboard.html')
 # non vigenere
 @app.route('/evaluasi_non')
 def evaluasi_non():
@@ -261,8 +258,7 @@ def evaluasi_non():
             out.write(tmp_val)
         ket = 'Output stored in static/UPLOAD_FOLDER_WO_VIGENERE folder'
         return render_template('dashboard_non_vigenere.html',citrauji1=citrauji1,citrauji2=citrauji2,histo1=histo1,histo2=histo2,state_process=state_process,values=values,state=state,time_non=time_non)
-    else:
-        # return redirect('/')
-        return render_template('dashboard_non_vigenere.html')
+    # return redirect('/')
+    return render_template('dashboard_non_vigenere.html')
 if __name__ == '__main__':
     app.run(debug=True)
