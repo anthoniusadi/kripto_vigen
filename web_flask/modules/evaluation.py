@@ -54,8 +54,7 @@ def calc_psnr(img1,img2):
         psnr = 'INFINITY'
         # psnr =  cv2.PSNR(img1,img2)
         return psnr
-    else:
-        return "shape doesnt match"
+    return "shape doesnt match"
 
 def D(source_img,restored_img):
     if (source_img.shape[0] == restored_img.shape[0] and source_img.shape[1] == restored_img.shape[1]):
