@@ -51,10 +51,7 @@ def check():
 @app.route('/process', methods = ["POST"])
 def process():
     selected_menu = request.form.get('vigenere')
-    if selected_menu == 'yes':
-        vigen_state = True
-    else:
-        vigen_state = False
+    vigen_state = selected_menu == 'yes'
 
     if vigen_state:
         global filename1
@@ -137,10 +134,7 @@ def non_vigen():
 @app.route('/process_non', methods = ["GET","POST"])
 def process_non():
     selected_menu = request.form.get('vigenere')
-    if selected_menu == 'yes':
-        vigen_state = True
-    else:
-        vigen_state = False
+    vigen_state = selected_menu == 'yes'
 
     if (vigen_state == False):
 
