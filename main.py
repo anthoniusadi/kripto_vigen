@@ -47,7 +47,7 @@ def __encDecImage(key, pixels, isEncrypt):
         raise Exception("Key must be string")
     row, col = pixels.shape
     pixels = pixels.flatten()
-    
+
     for i in range(len(pixels)):
         pixel = pixels[i]
         keychar = key[i % len(key)]
@@ -55,7 +55,7 @@ def __encDecImage(key, pixels, isEncrypt):
         alphIndex += isEncrypt * ord(keychar)
         alphIndex %= 256
         ans.append(alphIndex)
-        
+
     ret = np.array(ans).reshape([row, col])
     return np.uint8(ret)
 
