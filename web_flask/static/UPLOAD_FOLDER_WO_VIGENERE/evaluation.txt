@@ -1,6 +1,11 @@
-PSNR : shape doesnt matchdb
-MSE : shape doesnt match
-NPCR : shape doesnt match %
-UACI " shape doesnt match
-ENTROPY : 7.448
- Tidak ada komputasi enkripsi dan dekripsi 
+PSNR : INFINITYdb
+MSE : 0.0
+NPCR : 0.0 %
+UACI : 0.0
+ENTROPY : 3.358
+SSIM : 1.0
+NCC : 1.0
+Waktu Komputasi Enkripsi : None
+Waktu Komputasi Dekripsi : None 
+ Image_size citra 1 : 0.0938Mb 
+ Image_size citra 2 : 0.0938Mb 

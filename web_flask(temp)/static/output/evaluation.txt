@@ -1,0 +1,9 @@
+PSNR : 44.752db
+MSE : 6.532
+NPCR : 1.462 %
+UACI : 80.67
+ENTROPY : 3.354
+Waktu Komputasi Enkripsi : 0.019 detik
+Waktu Komputasi Dekripsi : 0.005 detik 
+ Image_size citra uji : 0.2295Mb 
+ Image_size citra dekripsi : 0.0886Mb 

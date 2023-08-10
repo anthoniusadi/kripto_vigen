@@ -9,7 +9,7 @@ import os
 def check_size(path_file):
     value_size = os.stat(path_file)
     # MB size
-    value_size = value_size.st_size / (1024*1024)
+    value_size = value_size.st_size / (1000*1000)
     return round(value_size,4)
 
 
@@ -31,7 +31,7 @@ def enkripsi(key,path_image_original):
 #     image_encrypted_B = ((b_channel / key) * np.mean(b_channel) )* 255
 #     image_encrypted_G = ((g_channel / key) * np.mean(g_channel) ) * 255
 #     image_encrypted_R = ((r_channel / key) * np.mean(r_channel) )* 255
-
+    
     image_encrypted_B = (b_channel / key) * 255
     image_encrypted_G = (g_channel / key) * 255
     image_encrypted_R = (r_channel / key) * 255
@@ -68,7 +68,7 @@ def enkripsi(key,path_image_original):
     g = cv2.calcHist([enkrip_image],[1],None,[255],[0,255])
     r = cv2.calcHist([enkrip_image],[2],None,[255],[0,255])    
 
-
+    
     plt.figure(figsize=(13, 7))
     plt.subplot(231),plt.plot(r),plt.title('R (encrypted)')
     plt.xlim(0, 255)
@@ -81,7 +81,7 @@ def enkripsi(key,path_image_original):
     # plt.subplot(133),plt.hist(image_encrypted_B, bins='auto'),plt.title('B')
     plt.tight_layout()
     plt.savefig('static/output/image_enkripsi_histogram.png')
-
+    
     print('Encrypted successfully! Waktu enkripsi image: {} detik'.format(time_stop - time_start))
     return image_encrypted_R,image_encrypted_G,image_encrypted_B,merging_encr,time_enkripsi,key
 
@@ -93,13 +93,13 @@ def dekripsi(key, r_channel, g_channel, b_channel):
     image_decrypted_B = (b_channel * key )/ 255
     image_decrypted_G = (g_channel * key )/ 255
     image_decrypted_R = (r_channel * key ) / 255
-
+    
     merging_decr=cv2.merge((image_decrypted_B,image_decrypted_G,image_decrypted_R))
     time_stop = time.perf_counter()
     time_dekripsi = round(time_stop - time_start,3)
     cv2.imwrite('static/output/image_dekripsi.jpg', merging_decr)
     dekrip_image = cv2.imread('static/output/image_dekripsi.jpg')
-
+    
     plt.figure(figsize=(8, 4))
     plt.subplot(231),plt.imshow(image_decrypted_R,'gray'),plt.title('R (decrypted)')
     plt.subplot(232),plt.imshow(image_decrypted_G,'gray'),plt.title('G (decrypted)')
@@ -138,7 +138,7 @@ def __encDecImage(key, pixels, isEncrypt):
         raise Exception("Key must be string")
     row, col = pixels.shape
     pixels = pixels.flatten()
-
+    
     for i in range(len(pixels)):
         pixel = pixels[i]
         keychar = key[i % len(key)]
@@ -146,7 +146,7 @@ def __encDecImage(key, pixels, isEncrypt):
         alphIndex += isEncrypt * ord(keychar)
         alphIndex %= 256
         ans.append(alphIndex)
-
+        
     ret = np.array(ans).reshape([row, col])
     return np.uint8(ret)
 
@@ -193,7 +193,7 @@ def histogram_non(im1,im2):
     plt.tight_layout()
     plt.savefig('static/UPLOAD_FOLDER_WO_VIGENERE/citra_uji1_split.png')
 
-
+    
     b_channel ,g_channel, r_channel = cv2.split(img2)
     plt.figure(figsize=(12, 4))
     plt.subplot(131),plt.hist(r_channel.flatten(), bins='auto'),plt.title('R')
@@ -209,7 +209,7 @@ def histogram_non(im1,im2):
     plt.subplot(133),plt.imshow(b_channel,'gray'),plt.title('B')
     plt.tight_layout()
     plt.savefig('static/UPLOAD_FOLDER_WO_VIGENERE/citra_uji2_split.png')
-
+    
 # def enkripsi(kunci, r_channel ,g_channel,b_channel):
 
 #     time_start = time.perf_counter()

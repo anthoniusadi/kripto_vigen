@@ -1,4 +1,6 @@
 import os
+import sys
+from PIL import Image
 import cv2
 # do cleaning image data 
 '''

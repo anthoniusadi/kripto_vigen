@@ -1,7 +1,111 @@
 from math import sqrt
+import os
 import cv2
 import numpy as np
+import time
+import matplotlib.pyplot as plt
+from skimage.metrics import structural_similarity as ssim
+from PIL import Image
+import gauss
+from scipy import signal
+from scipy import ndimage
+def ssim_evaluation(img1, img2, cs_map=False):
 
+    img1 = np.asarray(Image.open(img1).convert('L'))
+    img2 = np.asarray(Image.open(img2).convert('L'))
+    print(img1.shape)
+    print(img2.shape)
+    
+    img1 = img1.astype(np.float64)
+    img2 = img2.astype(np.float64)
+    
+    
+    score = ssim(img1,img2,data_range=1.0)
+    return score
+    
+    # size = 11
+    # sigma = 1.5
+    # window = np.random.normal(size, sigma)
+    # K1 = 0.01
+    # K2 = 0.03
+    # L = 255 #bitdepth of image
+    # C1 = (K1*L)**2
+    # C2 = (K2*L)**2
+    # mu1 = signal.fftconvolve(window, img1, mode='valid')
+    # mu2 = signal.fftconvolve(window, img2, mode='valid')
+    # mu1_sq = mu1*mu1
+    # mu2_sq = mu2*mu2
+    # mu1_mu2 = mu1*mu2
+    # sigma1_sq = signal.fftconvolve(window, img1*img1, mode='valid') - mu1_sq
+    # sigma2_sq = signal.fftconvolve(window, img2*img2, mode='valid') - mu2_sq
+    # sigma12 = signal.fftconvolve(window, img1*img2, mode='valid') - mu1_mu2
+    # if cs_map:
+    #     return (((2*mu1_mu2 + C1)*(2*sigma12 + C2))/((mu1_sq + mu2_sq + C1)*
+    #                 (sigma1_sq + sigma2_sq + C2)), 
+    #             (2.0*sigma12 + C2)/(sigma1_sq + sigma2_sq + C2))
+    # else:
+    #     return ((2*mu1_mu2 + C1)*(2*sigma12 + C2))/((mu1_sq + mu2_sq + C1)*
+    #                 (sigma1_sq + sigma2_sq + C2))
+def hitung_ssim(img1, img2):
+    
+    C1 = (0.01 * 255)**2
+    C2 = (0.03 * 255)**2
+
+    img1 = img1.astype(np.float64)
+    img2 = img2.astype(np.float64)
+    kernel = cv2.getGaussianKernel(11, 1.5)
+    # window dibuat 2dimensi gausian
+    window = np.outer(kernel, kernel.transpose())
+# -1 supaya dimensi outputnya sama dengan input 
+    mu1 = cv2.filter2D(img1, -1, window)
+    mu2 = cv2.filter2D(img2, -1, window)
+    mu1_sq = mu1**2
+    mu2_sq = mu2**2
+    mu1_mu2 = mu1 * mu2
+    
+    sigma1_sq = cv2.filter2D(img1**2, -1, window) - mu1_sq
+    sigma2_sq = cv2.filter2D(img2**2, -1, window) - mu2_sq
+    sigma12 = cv2.filter2D(img1 * img2, -1, window) - mu1_mu2
+    
+    atas = ((2 * mu1_mu2 + C1) * (2 * sigma12 + C2))
+    bawah = ((mu1_sq + mu2_sq + C1) * (sigma1_sq + sigma2_sq + C2))
+    ssim_map = atas / bawah
+    # cv2.imshow('im',ssim_map)
+    # cv2.waitKey()
+    # plt.imshow((ssim_map*255).astype(np.uint8))
+    # plt.colorbar()
+    # plt.show()
+    print(f'window : {window}, kernel : {kernel}')
+    return ssim_map.mean()
+
+
+def calculate_ssim(img1, img2):
+    
+    if not img1.shape == img2.shape:
+        raise ValueError('Dimensi berbeda')
+    if img1.ndim == 2:
+        return hitung_ssim(img1, img2)
+    elif img1.ndim == 3:
+        if img1.shape[2] == 3:
+            ssims = []
+            for i in range(3):
+                ssims.append(hitung_ssim(img1, img2))
+            return np.array(ssims).mean()
+        elif img1.shape[2] == 1:
+            return hitung_ssim(np.squeeze(img1), np.squeeze(img2))
+    else:
+        raise ValueError('Dimensi tidak sama')
+    
+def ncc_evaluation(img1, img2):
+    atas = np.mean((img1 - img1.mean()) * (img2 - img2.mean()))
+    standard_dev = img1.std() * img2.std()
+    if standard_dev == 0:
+        return 0
+    else:
+        atas /= standard_dev
+        value = atas
+        return value
+    
 def entropy(img1):
         val_entropy = []
         img = cv2.cvtColor(img1,cv2.COLOR_BGR2GRAY)  
@@ -27,7 +131,8 @@ def calc_mse(img1,img2):
         total_pixel = img1.shape[0] * img1.shape[1] 
         mse_val = summed_error / total_pixel
         return round(mse_val,3)
-    return 'shape doesnt match'
+    else:
+        return 'shape doesnt match'
 
 # def calc_mse(img1,img2):
 #     if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
@@ -48,9 +153,10 @@ def calc_psnr(img1,img2):
         if mse>0:
             psnr = 20 * np.log10(1.0 / sqrt(mse)) 
             return round(psnr,3)
-        psnr = 'INFINITY'
+        else:
+            psnr = 'INFINITY'
         # psnr =  cv2.PSNR(img1,img2)
-        return psnr
+            return psnr
     else:
         return "shape doesnt match"
 
@@ -79,13 +185,15 @@ def D(source_img,restored_img):
                 else:
                     count_1+=1
         return count_0,count_1
-    return "shape doesnt match"
+    else:
+        return "shape doesnt match"
 
 def npcr(img1,img2):
     if (img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]):
         _ , one = D(img1,img2)
         return round(one /(img1.shape[0]*img1.shape[1]),3)
-    return "shape doesnt match"
+    else:
+        return "shape doesnt match"
 
 def uaci(source_img,restored_img):
     if (source_img.shape[0] == restored_img.shape[0] and source_img.shape[1] == restored_img.shape[1]):
@@ -100,4 +208,5 @@ def uaci(source_img,restored_img):
         value = round((s / (source_img.shape[0]*source_img.shape[1]) )*100,2)
     #     print(value)
         return round(value,3)
-    return "shape doesnt match"
+    else:
+        return "shape doesnt match"

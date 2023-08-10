@@ -1,0 +1,6 @@
+PSNR : INFINITYdb
+MSE : 0.0
+NPCR : 0.0 %
+UACI " 0.0
+ENTROPY : 3.354
+ Tidak ada komputasi enkripsi dan dekripsi 
